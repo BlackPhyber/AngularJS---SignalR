@@ -3,6 +3,12 @@
     padding-bottom: 20px;
 }
 
+[ng\:cloak], [ng-cloak],
+[data-ng-cloak], [x-ng-cloak],
+.ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
+
 .chatbox {
     display: table;
     width: 100%;
@@ -31,9 +37,30 @@
         list-style-type: none;
     }
 
-    .chatbox .message, .chatbox .contact a {
+    .chatbox .title {
+        border-bottom: 1px #ededed solid;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .chatbox .message,
+    .chatbox .contact a {
         padding: 5px;
     }
+
+        .chatbox .contact a,
+        .chatbox .contact a:link,
+        .chatbox .contact a:visited {
+            display: block;
+            color: black;
+            text-decoration: none;
+        }
+
+            .chatbox .contact a:hover {
+                color: black;
+                background-color: #ededed;
+            }
 
     .chatbox .contact .glyphicon-check {
         visibility: hidden;

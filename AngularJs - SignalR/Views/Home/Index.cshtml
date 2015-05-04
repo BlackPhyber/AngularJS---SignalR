@@ -2,16 +2,17 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="row" ng-controller="ChatController">
+<div class="row" ng-controller="ChatController" ng-cloak>
     <section class="chatbox">
         <ul class="message-list">
+            <li class="title">Messages</li>
             <li class="message" ng-repeat="msg in chats.messages">
                 <strong>{{msg.sender}}</strong> {{msg.message}}
             </li>
         </ul>
         <ul class="contact-list">
-            <li class="contact selected"><a href=""><span class="glyphicon glyphicon-check" aria-hidden="true"></span> Thomas</a></li>
-            <li class="contact"><a href=""><span class="glyphicon glyphicon-check" aria-hidden="true"></span> Thomas</a></li>
+            <li class="title">Contacts</li>
+            @*<li class="contact selected"><a href=""><span class="glyphicon glyphicon-check" aria-hidden="true"></span> Thomas</a></li>*@
         </ul>
     </section>
 </div>
