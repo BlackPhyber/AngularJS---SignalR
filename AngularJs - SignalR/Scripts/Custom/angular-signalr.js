@@ -5,40 +5,36 @@
     module.constant('$', $);
 
     function SignalRHub($) {
-        var self = this;
-        self.listeners = [];
+        var hubs = [];
 
-        var service = {};
-
-        service.init = function (hubName) {
-            self.connection = $.hubConnection();
-            self.proxy = self.connection.createHubProxy(hubName);
+        var Hub = function (name) {
+            this.connection = $.hubConnection();
+            this.proxy = this.connection.createHubProxy(name);
+            this.listeners = [];
         };
 
-        service.on = function (eventName, fn) {
-            if (!self.connection || !self.proxy) {
-                self.listeners.push({
-                    eventName: eventName,
-                    fn: fn
-                });
-
-                return;
-            }
-
-            self.proxy.on(eventName, fn);
+        Hub.prototype.on = function (eventName, fn) {
+            this.proxy.on(eventName, fn);
         };
 
-        service.start = function () {
-            if (!self.connection || !self.proxy) throw "No hub initialized";
-
-            angular.forEach(self.listeners, function (listener) {
-                self.proxy.on(listener.eventName, listener.fn);
-            });
-
-            self.connection.start();
+        Hub.prototype.start = function () {
+            this.connection.start();
         };
 
-        return service;
+        Hub.prototype.stop = function () {
+            this.connection.stop();
+        };
+
+        var factory = {};
+
+        factory.init = function (name) {
+            var hub = new Hub(name);
+            hubs.push(hub);
+
+            return hub;
+        };
+
+        return factory;
     };
     SignalRHub.$inject = ['$'];
 

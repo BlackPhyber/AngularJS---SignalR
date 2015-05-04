@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
-using AngularJs___SignalR.Hubs;
-using Microsoft.AspNet.SignalR;
+using AngularJs___SignalR.Helpers;
 
 namespace AngularJs___SignalR.Controllers
 {
@@ -8,9 +7,9 @@ namespace AngularJs___SignalR.Controllers
     {
         public ActionResult Index()
         {
-            var hub = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+            var chatHubHelper = new ChatHubHelper();
+            chatHubHelper.Send("System", "Someone visited the HomePage");
 
-            hub.Clients.All.addMessage("System", "Somebody entered the room!");
             return View();
         }
 

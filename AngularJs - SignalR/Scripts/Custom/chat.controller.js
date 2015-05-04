@@ -2,7 +2,7 @@
     'use strict';
 
     function ChatController($scope, ChatService) {
-        $scope.testing = 'Dit is een test';
+        $scope.chats = ChatService;
     };
 
     ChatController.$inject = ['$scope', 'ChatService'];

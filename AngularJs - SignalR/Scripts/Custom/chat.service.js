@@ -1,21 +1,23 @@
 ﻿(function () {
     'use strict';
 
-    function ChatService(SignalRHub) {
-        
+    function ChatService($rootScope, SignalRHub) {
+        var service = this;
+        var hub = SignalRHub.init('chatHub');
 
-        SignalRHub.on('addMessage', function (sender, message) {
-            console.log('New message:');
-            console.log({ sender: sender, message: message });
+        service.messages = [];
+        hub.on('addMessage', function (sender, message) {
+            $rootScope.$apply(function () {
+                service.messages.push({ sender: sender, message: message });
+            });
         });
-        SignalRHub.init('chatHub');
 
-        SignalRHub.start();
+        hub.start();
 
-        return {};
+        return service;
     };
 
-    ChatService.$inject = ['SignalRHub'];
+    ChatService.$inject = ['$rootScope', 'SignalRHub'];
 
     angular.module('chatApp').factory('ChatService', ChatService);
 })();
