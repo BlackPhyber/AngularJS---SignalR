@@ -6,7 +6,7 @@
     <section class="chatbox">
         <ul class="message-list">
             <li class="title">Messages</li>
-            <li class="message" ng-repeat="msg in chats.messages">
+            <li class="message" ng-repeat="msg in messages">
                 <strong>{{msg.sender}}</strong> {{msg.message}}
             </li>
         </ul>
@@ -15,6 +15,7 @@
             @*<li class="contact selected"><a href=""><span class="glyphicon glyphicon-check" aria-hidden="true"></span> Thomas</a></li>*@
         </ul>
     </section>
+    <input type="text" ng-model="newMsg" /><button ng-click="send()">send</button>
 </div>
 
 @section scripts{

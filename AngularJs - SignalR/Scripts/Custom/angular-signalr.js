@@ -4,24 +4,51 @@
     var module = angular.module('td-SignalR', []);
     module.constant('$', $);
 
-    function SignalRHub($) {
+    function SignalRHub($, $q, $rootScope) {
         var hubs = [];
 
         var Hub = function (name) {
             this.connection = $.hubConnection();
             this.proxy = this.connection.createHubProxy(name);
-            this.listeners = [];
         };
 
         Hub.prototype.on = function (eventName, fn) {
-            this.proxy.on(eventName, fn);
+            this.proxy.on(eventName, function () {
+                var args = arguments;
+
+                $rootScope.$apply(fn.apply(null, args));
+            });
         };
 
-        Hub.prototype.start = function () {
-            this.connection.start();
+        Hub.prototype.call = function (fnName, args) {
+            var deferred = $q.defer();
+
+            this.proxy.invoke.apply(this.proxy, arguments)
+                .done(function (result) {
+                    deferred.resolve(result);
+                })
+                .fail(function (result) {
+                    deferred.reject(result);
+                });
+
+            return deferred.promise;
         };
 
-        Hub.prototype.stop = function () {
+        Hub.prototype.connect = function () {
+            var deferred = $q.defer();
+
+            this.connection.start(/*{ transport: ['webSockets', 'longPolling'] }*/)
+                .done(function (result) {
+                    deferred.resolve(result);
+                })
+                .fail(function (result) {
+                    deferred.reject(result);
+                });
+
+            return deferred.promise;
+        };
+
+        Hub.prototype.disconnect = function () {
             this.connection.stop();
         };
 
@@ -36,7 +63,7 @@
 
         return factory;
     };
-    SignalRHub.$inject = ['$'];
+    SignalRHub.$inject = ['$', '$q', '$rootScope'];
 
     module.factory('SignalRHub', SignalRHub);
 })();
