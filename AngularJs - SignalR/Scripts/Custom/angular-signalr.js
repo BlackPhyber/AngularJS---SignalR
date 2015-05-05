@@ -7,6 +7,10 @@
     function SignalRHub($, $q, $rootScope) {
         var hubs = [];
 
+        var handleEvent = function (connection, eventName, fn) {
+            connection[eventName](fn);
+        };
+
         var Hub = function (name) {
             this.connection = $.hubConnection();
             this.proxy = this.connection.createHubProxy(name);
@@ -49,11 +53,11 @@
         };
 
         Hub.prototype.starting = function (fn) {
-            this.connection.starting(fn);
+            handleEvent(this.connection, 'starting', fn);
         };
 
         Hub.prototype.received = function (fn) {
-            this.connection.received(fn);
+            handleEvent(this.connection, 'received', fn);
         };
 
         Hub.prototype.disconnect = function () {

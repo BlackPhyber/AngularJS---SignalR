@@ -30,7 +30,12 @@
             console.log(result);
         });
 
-        
+        hub.connect()
+            .then(function () {
+                console.log('Connected to ChatHub!');
+            }, function () {
+                connection.log('Not connected to ChatHub!');
+            });
 
         return service;
     };
