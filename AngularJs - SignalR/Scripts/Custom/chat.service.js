@@ -22,12 +22,15 @@
             service.messages.push({ sender: sender, message: message });
         });
 
-        hub.connect()
-            .then(function () {
-                console.log('Connected to ChatHub!');
-            }, function () {
-                connection.log('Not connected to ChatHub!');
-            });
+        hub.starting(function () {
+            console.log('Starting event');
+        });
+
+        hub.received(function (result) {
+            console.log(result);
+        });
+
+        
 
         return service;
     };

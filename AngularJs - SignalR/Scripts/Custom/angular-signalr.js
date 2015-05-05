@@ -48,6 +48,14 @@
             return deferred.promise;
         };
 
+        Hub.prototype.starting = function (fn) {
+            this.connection.starting(fn);
+        };
+
+        Hub.prototype.received = function (fn) {
+            this.connection.received(fn);
+        };
+
         Hub.prototype.disconnect = function () {
             this.connection.stop();
         };
